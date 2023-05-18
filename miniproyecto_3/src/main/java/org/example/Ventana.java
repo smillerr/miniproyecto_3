@@ -37,9 +37,10 @@ public class Ventana extends JFrame {
     private JComboBox cb_dificultad;
     private JButton btn_jugar;
     private JButton btn_score;
-
+    private JPanel juegoPanel;
+    private JPanel inicioPanel;
     private Jugador player;
-
+    int tananio=2;
     int[] vector = new int[16];
 
     public Ventana() {
@@ -64,7 +65,7 @@ public class Ventana extends JFrame {
         btn_jugar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                jugar();
             }
         });
         /**
@@ -73,31 +74,30 @@ public class Ventana extends JFrame {
         btn_score.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                registerUser();
-
+                //registerUser();
             }
         });
     }
 
-    private void registerUser() {
-        String nombre = tf_nombreJugador.getText();
-        Object imagen = cb_tipoImagen.getSelectedIndex();
-        Object dificultad = cb_dificultad.getSelectedIndex();
 
-        if (nombre.isEmpty() || imagen.equals(-1) ||dificultad.equals(-1)) {
-            JOptionPane.showMessageDialog(this, "Por favor, llena toda la informacion", "Try again", JOptionPane.ERROR_MESSAGE);
+    public void jugar(){
+        //
+        if(!tf_nombreJugador.getText().equals("") && !cb_tipoImagen.getSelectedItem().equals("") && !cb_dificultad.getSelectedItem().equals("")){
+            player = new Jugador();
+            player.setNombre(tf_nombreJugador.getText());
+            player.setCategoria((String) cb_tipoImagen.getSelectedItem());
+            player.setDificultad((String) cb_dificultad.getSelectedItem());
+
+            System.out.print(player.getNombre());
+
+            tabbedPane1.setSelectedIndex(1);
+            inicioPanel.setEnabled(false);
             return;
         }
-        user = addUserToDatabase(nombre, imagen, dificultad);
-        System.out.println("El jugador se llama: " + nombre.toString());
-    }
 
-    public Jugador user;
-    private Jugador addUserToDatabase(String nombre, Object imagen, Object dificultad) {
-        Jugador user = null;
-        return user;
-    }
+        JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos solicitados", "ADVERTENCIA", JOptionPane.OK_CANCEL_OPTION);
 
+    }
     public void generarVector() {
         // Inicializa el vector con valor 0
         Arrays.fill(vector, 0);

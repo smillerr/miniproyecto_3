@@ -1,10 +1,69 @@
 package org.example;
 
+import javax.swing.*;
+
 public class Jugador {
 
-    public String nombre;
-    public String imagen;
-    public String dificultad;
+    private String nombre;
+    private String categoria;
+    private String dificultad;
+    private int intentos;
+    private int intentosFallidos;
 
-    private int tiempo;
+    public void Jugador(){
+        this.nombre = "";
+        this.categoria = "";
+        this.dificultad = "";
+        this.intentos = 0;
+        this.intentosFallidos = 0;
+    }
+
+    public void Jugador(String nombre, String categoria, String dificultad, int intentos, int intentosFallidos){
+
+        this.nombre=nombre;
+        this.categoria = categoria;
+        this.dificultad = dificultad;
+        this.intentos = intentos;
+        this.intentosFallidos = intentosFallidos;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
+
+    public String getDificultad() {
+        return dificultad;
+    }
+
+    public void setDificultad(String dificultad) {
+        this.dificultad = dificultad;
+    }
+
+    public int getIntentos() {
+        return intentos;
+    }
+
+    public void setIntentos(int intentos) {
+        this.intentos = intentos;
+    }
+
+    public int getIntentosFallidos() {
+        return intentosFallidos;
+    }
+
+    public void setIntentosFallidos(int intentosFallidos) {
+        this.intentosFallidos = intentosFallidos;
+    }
 }
