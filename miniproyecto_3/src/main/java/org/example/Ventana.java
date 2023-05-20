@@ -3,6 +3,8 @@ package org.example;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.*;
 
 public class Ventana extends JFrame {
@@ -40,8 +42,12 @@ public class Ventana extends JFrame {
     private JPanel juegoPanel;
     private JPanel inicioPanel;
     private Jugador player;
-    int tananio=2;
-    int[] vector = new int[16];
+    int vectorSize=0;
+    int vectorHard[] = new int[16];
+
+    int vectorMedium[] = new int[8];
+
+    int vectorEasy[] = new int[4];
 
     public Ventana() {
         super("Juego de Parejas");
@@ -51,13 +57,13 @@ public class Ventana extends JFrame {
         desordenarImgsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                generarVector();
-                displayImages();
+                //generarVector();
+                //displayImages();
             }
         });
 
-        generarVector();
-        displayImages();
+
+        //displayImages();
 
     /**
      * listener del boton de jugar
@@ -77,6 +83,16 @@ public class Ventana extends JFrame {
                 //registerUser();
             }
         });
+        for(JLabel card : labels){
+            card.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    System.out.println("I got clicked");
+                }
+            });
+        }
+
     }
 
 
@@ -84,46 +100,62 @@ public class Ventana extends JFrame {
         //
         if(!tf_nombreJugador.getText().equals("") && !cb_tipoImagen.getSelectedItem().equals("") && !cb_dificultad.getSelectedItem().equals("")){
             player = new Jugador();
+            String dificultad = (String) cb_dificultad.getSelectedItem();
+            String categoria = (String) cb_tipoImagen.getSelectedItem();
+
             player.setNombre(tf_nombreJugador.getText());
-            player.setCategoria((String) cb_tipoImagen.getSelectedItem());
-            player.setDificultad((String) cb_dificultad.getSelectedItem());
+            player.setCategoria(categoria);
+            player.setDificultad(dificultad);
+
+            if(dificultad.contains("4")){
+                generarVector(vectorEasy);
+                displayImages(vectorEasy);
+            }
+            else if(dificultad.contains("8")){
+                generarVector(vectorMedium);
+                displayImages(vectorMedium);
+            }
+            else if (dificultad.contains("16")){
+                generarVector(vectorHard);
+                displayImages(vectorHard);
+            }
 
             System.out.print(player.getNombre());
 
             tabbedPane1.setSelectedIndex(1);
             inicioPanel.setEnabled(false);
-            return;
+
+        }
+        else{
+            JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos solicitados", "ADVERTENCIA", JOptionPane.OK_CANCEL_OPTION);
         }
 
-        JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos solicitados", "ADVERTENCIA", JOptionPane.OK_CANCEL_OPTION);
-
     }
-    public void generarVector() {
+    public void generarVector(int someVector[]) {
         // Inicializa el vector con valor 0
-        Arrays.fill(vector, 0);
+        Arrays.fill(someVector, 0);
         Random random = new Random();
 
         // Agrega los numeros entre 1 y 8 en dos posiciones diferentes de las 16 disponibles en el arreglo
-        for (int i = 1; i <= 8; i++) {
+        for (int i = 1; i <= someVector.length/2; i++) {
             for (int j = 0; j < 2; j++) {
                 int posicion;
                 // El ciclo se ejecuta mientras haya un valor distinto de cero en la posición del arreglo
                 // Esto indica que debe encontrar una posición en cero para asignar el valor de i
                 do {
-                    posicion = random.nextInt(16);
-                } while (vector[posicion] != 0);
-                vector[posicion] = i;
+                    posicion = random.nextInt(someVector.length);
+                } while (someVector[posicion] != 0);
+                someVector[posicion] = i;
             }
         }
 
-         System.out.println("El vector resultante es: " + Arrays.toString(vector));
-
+         System.out.println("El vector resultante es: " + Arrays.toString(someVector));
     }
 
-    public void displayImages() {
-        for(int i=0; i < vector.length; i++) {
+    public void displayImages(int someVector[]) {
+        for(int i=0; i < someVector.length; i++) {
             try {
-                ImageIcon icon = new ImageIcon(getClass().getResource("/imgs/landscape" + vector[i] + ".jpg"));
+                ImageIcon icon = new ImageIcon(getClass().getResource("/imgs/landscape" + someVector[i] + ".jpg"));
                 labels[i].setIcon(icon);
             } catch (Exception e) {
                 e.printStackTrace();
