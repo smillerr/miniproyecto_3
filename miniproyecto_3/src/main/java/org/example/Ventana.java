@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.AreaAveragingScaleFilter;
 import java.util.*;
 
 public class Ventana extends JFrame {
@@ -43,11 +44,24 @@ public class Ventana extends JFrame {
     private JPanel inicioPanel;
     private Jugador player;
     int vectorSize=0;
+    int vector[];
     int vectorHard[] = new int[16];
 
     int vectorMedium[] = new int[8];
 
     int vectorEasy[] = new int[4];
+
+    int contador = 0;
+
+    int tarjeta1 = 0;
+
+    int tarjeta2 = 0;
+
+    int contadorDeClicks = 1;
+
+    ArrayList<Tarjeta> tableroActual = new ArrayList<>();
+
+
 
     public Ventana() {
         super("Juego de Parejas");
@@ -83,12 +97,30 @@ public class Ventana extends JFrame {
                 //registerUser();
             }
         });
-        for(JLabel card : labels){
-            card.addMouseListener(new MouseAdapter() {
+         for(int i=0; i<labels.length; i++){
+            int finalI = i;
+            labels[i].addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
                     super.mouseClicked(e);
-                    System.out.println("I got clicked");
+                    if(contadorDeClicks%2==1){
+                        tarjeta1=tableroActual.get(finalI).getIdentifier();
+                        System.out.println("La tarjeta 1 del par de tarjetas actual es: "+tarjeta1);
+                    }
+                    System.out.println("La tarjeta 1 del par de tarjetas anterior es: "+tarjeta1);
+                    if(contadorDeClicks%2==0){
+                        tarjeta2=tableroActual.get(finalI).getIdentifier();
+                        System.out.println("La tarjeta 2 del par de tarjetas actual es: "+tarjeta2);
+                    }
+                    System.out.println("La tarjeta 2 del par de tarjetas anterior es: "+tarjeta2);
+                    int limite=tableroActual.size();
+
+                    if(limite!=0 && contadorDeClicks%2==0){
+                        limite = checkImages(tarjeta1,tarjeta2);
+                        System.out.println("El tamaño del vector de tarjetas NO ADIVINADAS es:" + limite);
+                    }
+                    contadorDeClicks++;
+                    System.out.println("Cantidad de clicks: "+(contadorDeClicks-1));
                 }
             });
         }
@@ -97,6 +129,7 @@ public class Ventana extends JFrame {
 
 
     public void jugar(){
+
         //
         if(!tf_nombreJugador.getText().equals("") && !cb_tipoImagen.getSelectedItem().equals("") && !cb_dificultad.getSelectedItem().equals("")){
             player = new Jugador();
@@ -109,7 +142,10 @@ public class Ventana extends JFrame {
 
             if(dificultad.contains("4")){
                 generarVector(vectorEasy);
-                displayImages(vectorEasy);
+                tableroActual=displayImages(vectorEasy);
+                for(int i=0; i<tableroActual.size(); i++){
+                    System.out.print(tableroActual.get(i).getIdentifier()+", ");
+                }
             }
             else if(dificultad.contains("8")){
                 generarVector(vectorMedium);
@@ -117,7 +153,10 @@ public class Ventana extends JFrame {
             }
             else if (dificultad.contains("16")){
                 generarVector(vectorHard);
-                displayImages(vectorHard);
+                tableroActual=displayImages(vectorHard);
+                for(int i=0; i<tableroActual.size(); i++){
+                    System.out.print(tableroActual.get(i).getIdentifier()+", ");
+                }
             }
 
             System.out.print(player.getNombre());
@@ -125,6 +164,13 @@ public class Ventana extends JFrame {
             tabbedPane1.setSelectedIndex(1);
             inicioPanel.setEnabled(false);
 
+
+            /*
+            * while(contador<=4){
+                System.out.println("Im working");
+                contador++;
+            }
+            * */
         }
         else{
             JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos solicitados", "ADVERTENCIA", JOptionPane.OK_CANCEL_OPTION);
@@ -152,15 +198,37 @@ public class Ventana extends JFrame {
          System.out.println("El vector resultante es: " + Arrays.toString(someVector));
     }
 
-    public void displayImages(int someVector[]) {
+    public ArrayList<Tarjeta> displayImages(int someVector[]) {
+        ArrayList<Tarjeta> tarjetas = new ArrayList<>();
+
         for(int i=0; i < someVector.length; i++) {
             try {
-                ImageIcon icon = new ImageIcon(getClass().getResource("/imgs/landscape" + someVector[i] + ".jpg"));
+                ImageIcon icon = new ImageIcon(getClass().getResource("/imgs/img0.png"));
                 labels[i].setIcon(icon);
+                Tarjeta slot = new Tarjeta();
+                slot.setCustomImage("/imgs/landscape"+someVector[i]+".jpg");
+                slot.setGuessed(false);
+                slot.setIdentifier(someVector[i]);
+                tarjetas.add(slot);
             } catch (Exception e) {
                 e.printStackTrace();
+
             }
         }
+
+        return tarjetas;
+    }
+
+    public int checkImages(int identifier1, int identifier2){
+        if(identifier1==identifier2){
+            //Logica para sacarlos del arreglo
+            tableroActual.remove(identifier1);
+            tableroActual.remove(identifier1);
+            for(int i=0; i<tableroActual.size(); i++){
+                System.out.println(tableroActual.get(i).getIdentifier());
+            }
+        }
+        return tableroActual.size();
     }
 
 }
