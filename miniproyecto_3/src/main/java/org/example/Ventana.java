@@ -45,6 +45,7 @@ public class Ventana extends JFrame {
     private JPanel inicioPanel;
     private JPanel puntajePanel;
     private JTextArea puntajeTextArea;
+    private JButton restartButton;
     private Jugador player;
     int vectorHard[] = new int[16];
 
@@ -58,15 +59,13 @@ public class Ventana extends JFrame {
     int indexTarjeta2=0;
     int contadorDeClicks = 1;
     int intentos = 0;
-
-     private ArrayList<Tarjeta> tableroActual = new ArrayList<>();
-
-     private ArrayList<JLabel> labelsList = new ArrayList<>();
-
+    private ArrayList<Tarjeta> tableroActual = new ArrayList<>();
+    private ArrayList<JLabel> labelsList = new ArrayList<>();
     private Timer temporizador;
     private int segundosTranscurridos;
+    ImageIcon defaultIcon = new ImageIcon(getClass().getResource("/imgs/img0.png"));
 
-
+    private int emptyVector[] = new int[0];
 
 
 
@@ -114,6 +113,12 @@ public class Ventana extends JFrame {
                 //registerUser();
             }
         });
+        restartButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                restartGame();
+            }
+        });
     }
 
 
@@ -156,6 +161,10 @@ public class Ventana extends JFrame {
             tabbedPane1.setSelectedIndex(1);
             tabbedPane1.setEnabledAt(0,false);
 
+            tf_nombreJugador.setText("");
+            cb_tipoImagen.setSelectedIndex(0);
+            cb_dificultad.setSelectedIndex(0);
+
             iniciarTemporizador();
         }
         else{
@@ -184,13 +193,14 @@ public class Ventana extends JFrame {
     }
 
     public ArrayList<Tarjeta> displayImages(int someVector[], String categoria) {
-        ArrayList<Tarjeta> tarjetas = new ArrayList<>();
 
-        for(int i=0; i < someVector.length; i++) {
+        ArrayList<Tarjeta> tarjetas = new ArrayList<>();
+        for(int i=0; i <someVector.length; i++) {
             try {
                 JLabel labelInList = labels[i];
                 labelsList.add(labelInList);
-                //labelsList.add()
+                labelsList.get(i).setVisible(true);
+                labelsList.get(i).setEnabled(true);
                 ImageIcon icon = new ImageIcon(getClass().getResource("/imgs/img0.png"));
                 labels[i].setIcon(icon);
                 Tarjeta slot = new Tarjeta();
@@ -207,87 +217,102 @@ public class Ventana extends JFrame {
     }
 
     public Boolean checkImages(int identifier1, int identifier2){
-        player.setIntentos(intentos++);
+        player.setIntentos(intentos=intentos+1);
         if(identifier1==identifier2){
             return true;
         }
         else{
-            player.setIntentosFallidos(fallidos++);
+            player.setIntentosFallidos(fallidos=fallidos+1);
             return false;
         }
     }
     public void cardsToGuess() {
         final boolean[] seleccionBloqueada = {false}; // Variable para controlar el estado de selección
-
+        if(labelsList.size()==0){
+            return;
+        }
         for (int i = 0; i < labelsList.size(); i++) {
             int finalI = i;
             labelsList.get(i).addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
-                    super.mouseClicked(e);
-                    //Variable para verificar si la tarjeta en el tablero ya fue adivinada
-                    if(tableroActual.get(finalI).isGuessed()){
-                        return;
-                    }
-                    // Verificar si la selección está bloqueada
-                    if (seleccionBloqueada[0]) {
-                        return; // Salir si la selección está bloqueada
-                    }
+                    for(int j=0; j<1; j++){
+                        super.mouseClicked(e);
+                        //Variable para verificar si la tarjeta en el tablero ya fue adivinada
+                        if(tableroActual.get(finalI).isGuessed()){
+                            return;
+                        }
+                        // Verificar si la selección está bloqueada
+                        if (seleccionBloqueada[0]) {
+                            return; // Salir si la selección está bloqueada
+                        }
 
-                    ImageIcon customImage = new ImageIcon(getClass().getResource(tableroActual.get(finalI).getCustomImage()));
-                    labelsList.get(finalI).setIcon(customImage);
+                        ImageIcon customImage = new ImageIcon(getClass().getResource(tableroActual.get(finalI).getCustomImage()));
+                        labelsList.get(finalI).setIcon(customImage);
 
-                    if (contadorDeClicks % 2 == 1) {
-                        tarjeta1 = tableroActual.get(finalI).getIdentifier();
-                        indexTarjeta1 = finalI;
-                    }
-                    if (contadorDeClicks % 2 == 0) {
-                        tarjeta2 = tableroActual.get(finalI).getIdentifier();
-                        indexTarjeta2 = finalI;
-                    }
+                        if (contadorDeClicks % 2 == 1) {
+                            tarjeta1 = tableroActual.get(finalI).getIdentifier();
+                            indexTarjeta1 = finalI;
+                        }
+                        if (contadorDeClicks % 2 == 0) {
+                            tarjeta2 = tableroActual.get(finalI).getIdentifier();
+                            indexTarjeta2 = finalI;
+                        }
 
-                    if (contadorDeClicks % 2 == 0) {
-                        // Bloquear la selección
-                        seleccionBloqueada[0] = true;
+                        if (contadorDeClicks % 2 == 0) {
+                            // Bloquear la selección
+                            seleccionBloqueada[0] = true;
 
-                        Timer temporizador = new Timer();
-                        temporizador.schedule(new TimerTask() {
-                            @Override
-                            public void run() {
-                                Boolean match = checkImages(tarjeta1, tarjeta2);
-                                if (match) {
-                                    labelsList.get(indexTarjeta1).setEnabled(false);
-                                    labelsList.get(indexTarjeta2).setEnabled(false);
-                                    tableroActual.get(indexTarjeta1).setGuessed(true);
-                                    tableroActual.get(indexTarjeta2).setGuessed(true);
-                                    System.out.println(player.getIntentos());
-                                    System.out.println(player.getIntentosFallidos());
+                            Timer temporizador = new Timer();
+                            temporizador.schedule(new TimerTask() {
+                                @Override
+                                public void run() {
+                                    Boolean match = checkImages(tarjeta1, tarjeta2);
+                                    if (match) {
+                                        labelsList.get(indexTarjeta1).setEnabled(false);
+                                        labelsList.get(indexTarjeta2).setEnabled(false);
+                                        tableroActual.get(indexTarjeta1).setGuessed(true);
+                                        tableroActual.get(indexTarjeta2).setGuessed(true);
+                                        System.out.println(player.getIntentos());
+                                        System.out.println(player.getIntentosFallidos());
                                         if((player.getIntentos())-(player.getIntentosFallidos())==labelsList.size()/2){
-                                            contadorDeClicks=0;
+                                            contadorDeClicks=1;
                                             intentos=0;
                                             fallidos=0;
+                                            tarjeta1=0;
+                                            tarjeta2=0;
+                                            indexTarjeta1=0;
+                                            indexTarjeta2=0;
+                                            for(int i=0; i<labelsList.size(); i++){
+                                                labelsList.get(i).setEnabled(true);
+                                                tableroActual.get(i).setGuessed(false);
+                                                labelsList.get(i).setIcon(defaultIcon);
+                                            }
                                             tabbedPane1.setSelectedIndex(2);
                                             tabbedPane1.setEnabledAt(0,false);
-                                            tabbedPane1.setEnabledAt(1,false);
-                                            String puntaje = "PUNTAJE" +
-                                                    "\nTiempo utilizado: " + temporizador +
+
+                                            String puntaje = "\n" +
+                                                    "\nTiempo utilizado: " + actualizarTemporizador() +
+                                                    "\nNombre jugador: " + player.getNombre() +
+                                                    "\nDificultad: " + player.getDificultad() +
+                                                    "\nCategoría: " + player.getCategoria() +
                                                     "\nNúmero de intentos: " + player.getIntentos() +
                                                     "\nNúmero de intentos fallidos: " + player.getIntentosFallidos();
-                                            puntajeTextArea.setText(puntaje);
+                                            puntajeTextArea.append(puntaje);
                                         }
-                                } else {
-                                    ImageIcon defaultIcon = new ImageIcon(getClass().getResource("/imgs/img0.png"));
-                                    labelsList.get(indexTarjeta1).setIcon(defaultIcon);
-                                    labelsList.get(indexTarjeta2).setIcon(defaultIcon);
+                                    } else {
+                                        labelsList.get(indexTarjeta1).setIcon(defaultIcon);
+                                        labelsList.get(indexTarjeta2).setIcon(defaultIcon);
+                                    }
+
+                                    // Desbloquear la selección después de que el temporizador haya terminado
+                                    seleccionBloqueada[0] = false;
                                 }
+                            }, 1000); // Esperar 1 segundo (1000 milisegundos) antes de ejecutar el código
 
-                                // Desbloquear la selección después de que el temporizador haya terminado
-                                seleccionBloqueada[0] = false;
-                            }
-                        }, 1000); // Esperar 1 segundo (1000 milisegundos) antes de ejecutar el código
-
+                        }
+                        contadorDeClicks++;
                     }
-                    contadorDeClicks++;
                 }
             });
         }
@@ -299,17 +324,32 @@ public class Ventana extends JFrame {
             @Override
             public void run() {
                 segundosTranscurridos++;
-                actualizarTemporizador();
             }
         }, 1000, 1000);
     }
 
-    private void actualizarTemporizador() {
+    private String actualizarTemporizador() {
         int minutos = segundosTranscurridos / 60;
         int segundos = segundosTranscurridos % 60;
         String tiempoFormateado = String.format("%02d:%02d", minutos, segundos);
         // Mostrar el tiempo transcurrido en un componente de tu elección
         // Ejemplo:
-        setTitle("Juego de Parejas - Tiempo: " + tiempoFormateado);
+        return tiempoFormateado;
     }
+
+    public void restartGame(){
+        System.out.println(tableroActual.size());
+        for (int i = tableroActual.size() - 1; i >= 0; i--) {
+            tableroActual.remove(i);
+        }
+        for (int i = labelsList.size() - 1; i >= 0; i--) {
+            labelsList.get(i).setVisible(false);
+            labelsList.get(i).setEnabled(false);
+            labelsList.remove(i);
+        }
+        tabbedPane1.setEnabledAt(0,true);
+        tabbedPane1.setSelectedIndex(0);
+        tabbedPane1.setEnabledAt(2,false);
+    }
+
 }
