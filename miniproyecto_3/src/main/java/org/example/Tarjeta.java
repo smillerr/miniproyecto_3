@@ -15,7 +15,6 @@ public class Tarjeta {
     }
 
     public void Tarjeta(String customImage, Boolean guessed, int identifier){
-
         this.customImage = customImage;
         this.guessed = guessed;
         this.identifier = identifier;
