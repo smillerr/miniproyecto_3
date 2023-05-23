@@ -75,7 +75,7 @@ public class Ventana extends JFrame {
         setContentPane(panel1);
         setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
-        desordenarImgsButton.addActionListener(new ActionListener() {
+        /* desordenarImgsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //generarVector();
@@ -88,9 +88,11 @@ public class Ventana extends JFrame {
                     }
                     tableroActual = displayImages(vectorHard, player.getCategoria());
                 }
-                 **/
+
+
             }
         });
+        */
 
 
         //displayImages();
@@ -113,12 +115,15 @@ public class Ventana extends JFrame {
                 //registerUser();
             }
         });
-        restartButton.addActionListener(new ActionListener() {
+        /*
+        * restartButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 restartGame();
             }
         });
+        * */
+
     }
 
 
@@ -160,6 +165,7 @@ public class Ventana extends JFrame {
 
             tabbedPane1.setSelectedIndex(1);
             tabbedPane1.setEnabledAt(0,false);
+            tabbedPane1.setEnabledAt(2,false);
 
             tf_nombreJugador.setText("");
             cb_tipoImagen.setSelectedIndex(0);
@@ -290,6 +296,7 @@ public class Ventana extends JFrame {
                                             }
                                             tabbedPane1.setSelectedIndex(2);
                                             tabbedPane1.setEnabledAt(0,false);
+                                            tabbedPane1.setEnabledAt(1,false);
 
                                             String puntaje = "\n" +
                                                     "\nTiempo utilizado: " + actualizarTemporizador() +
