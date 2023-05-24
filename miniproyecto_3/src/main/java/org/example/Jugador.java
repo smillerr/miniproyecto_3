@@ -10,6 +10,10 @@ public class Jugador {
     private int intentos;
     private int intentosFallidos;
 
+    /**
+     * Constructor de la clase Jugador.
+     * Inicializa un objeto Jugador con valores predeterminados.
+     */
     public void Jugador(){
         this.nombre = "";
         this.categoria = "";
@@ -17,7 +21,9 @@ public class Jugador {
         this.intentos = 0;
         this.intentosFallidos = 0;
     }
-
+    /**
+    * Constructor de la clase Jugador que acepta parámetros para inicializar sus propiedades.
+    * */
     public void Jugador(String nombre, String categoria, String dificultad, int intentos, int intentosFallidos){
 
         this.nombre=nombre;

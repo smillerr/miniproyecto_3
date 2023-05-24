@@ -15,7 +15,8 @@
           </grid>
         </constraints>
         <properties>
-          <enabled value="true"/>
+          <enabled value="false"/>
+          <foreground color="-8870200"/>
         </properties>
         <border type="none"/>
         <children>
@@ -25,7 +26,9 @@
               <tabbedpane title="Inicio"/>
             </constraints>
             <properties>
+              <background color="-8870200"/>
               <enabled value="true"/>
+              <foreground color="-589828"/>
             </properties>
             <border type="none"/>
             <children>
@@ -43,6 +46,7 @@
                   <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <background color="-589828"/>
                   <font name="Lucida Sans Typewriter" size="18"/>
                   <text value="Nombre de Jugador"/>
                 </properties>
@@ -54,7 +58,9 @@
                   </grid>
                 </constraints>
                 <properties>
+                  <background color="-12364181"/>
                   <font name="Lucida Sans Typewriter"/>
+                  <foreground color="-589828"/>
                   <text value=""/>
                 </properties>
               </component>
@@ -63,6 +69,7 @@
                   <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <background color="-589828"/>
                   <font name="Lucida Sans Typewriter" size="18"/>
                   <text value="Categoría de imagenes"/>
                 </properties>
@@ -72,7 +79,9 @@
                   <grid row="5" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <background color="-12364181"/>
                   <font name="Lucida Sans Typewriter"/>
+                  <foreground color="-589828"/>
                   <model>
                     <item value=""/>
                     <item value="Rocket league"/>
@@ -86,6 +95,7 @@
                   <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <background color="-589828"/>
                   <font name="Lucida Sans Typewriter" size="18"/>
                   <text value="Dificultad"/>
                 </properties>
@@ -95,7 +105,9 @@
                   <grid row="7" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <background color="-12364181"/>
                   <font name="Lucida Sans Typewriter"/>
+                  <foreground color="-589828"/>
                   <model>
                     <item value=""/>
                     <item value="Fácil (4 imágenes)"/>
@@ -109,7 +121,9 @@
                   <grid row="9" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <background color="-12421743"/>
                   <font name="Barcade Bold" size="24"/>
+                  <foreground color="-14144459"/>
                   <text value="                    JUGAR                    "/>
                 </properties>
               </component>
@@ -118,7 +132,9 @@
                   <grid row="11" column="1" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
+                  <background color="-12421743"/>
                   <font name="Barcade Bold" size="24"/>
+                  <foreground color="-14144459"/>
                   <text value="           MEJORES PUNTAJES          "/>
                 </properties>
               </component>
@@ -175,7 +191,9 @@
               <tabbedpane title="Juego"/>
             </constraints>
             <properties>
+              <background color="-8870200"/>
               <enabled value="true"/>
+              <foreground color="-8870200"/>
             </properties>
             <border type="none"/>
             <children>
@@ -334,7 +352,10 @@
             <constraints>
               <tabbedpane title="Puntaje"/>
             </constraints>
-            <properties/>
+            <properties>
+              <background color="-8870200"/>
+              <foreground color="-8870200"/>
+            </properties>
             <border type="none"/>
             <children>
               <component id="61f14" class="javax.swing.JTextArea" binding="puntajeTextArea">
@@ -344,6 +365,8 @@
                   </grid>
                 </constraints>
                 <properties>
+                  <background color="-8870200"/>
+                  <foreground color="-589828"/>
                   <text value="PUNTAJE: "/>
                 </properties>
               </component>

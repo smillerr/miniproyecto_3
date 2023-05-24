@@ -9,6 +9,9 @@ import java.util.*;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Esta es la clase ventana en donde declaramos lo que ocupa para su funcionamiento, botones, labels, pestanias, etc.
+ * */
 public class Ventana extends JFrame {
     //Declaracion de variables para la pestaña del juego de las parejas
     private JPanel panel1;
@@ -69,7 +72,9 @@ public class Ventana extends JFrame {
 
 
 
-
+    /**
+     * Aqui se configura el titulo de la ventana, establece el panel de contenido y define el comportamiento de cierre de la ventana.
+     * */
     public Ventana() {
         super("Juego de Parejas");
         setContentPane(panel1);
@@ -126,7 +131,9 @@ public class Ventana extends JFrame {
 
     }
 
-
+/**
+ * Aqui realiza una serie de acciones despues de hacer una verificacion de los campos y selecciones de los componentes. Establece los valores del jugador, genera un vector de imagenes, muestra el tablero de imagenes, cambia la pestania seleccionada en un contenedor de pestanias, y muestra un cuadro de dialogo de advertencia si faltan datos.
+ * */
     public void jugar(){
 
         //
@@ -177,6 +184,9 @@ public class Ventana extends JFrame {
             JOptionPane.showMessageDialog(null, "Por favor ingrese todos los datos solicitados", "ADVERTENCIA", JOptionPane.OK_CANCEL_OPTION);
         }
     }
+    /**
+     * Genera un vector de enteros con valores aleatorios entre 1 y la mitad de la longitud del vector,asignando parejas de números en posiciones aleatorias del vector.
+     * */
     public void generarVector(int someVector[]) {
         // Inicializa el vector con valor 0
         Arrays.fill(someVector, 0);
@@ -198,6 +208,10 @@ public class Ventana extends JFrame {
          System.out.println("El vector resultante es: " + Arrays.toString(someVector));
     }
 
+    /**
+     * Muestra las imágenes correspondientes a los valores del vector en las etiquetas de la interfaz gráfica.
+     * Crea objetos Tarjeta asociados a cada imagen y los agrega a una lista.
+     * */
     public ArrayList<Tarjeta> displayImages(int someVector[], String categoria) {
 
         ArrayList<Tarjeta> tarjetas = new ArrayList<>();
@@ -222,6 +236,9 @@ public class Ventana extends JFrame {
         return tarjetas;
     }
 
+    /**
+     * Comprueba si dos identificadores de imágenes son iguales.
+     * */
     public Boolean checkImages(int identifier1, int identifier2){
         player.setIntentos(intentos=intentos+1);
         if(identifier1==identifier2){
@@ -232,6 +249,10 @@ public class Ventana extends JFrame {
             return false;
         }
     }
+    /**
+     * Asigna funcionalidad a las etiquetas de las tarjetas para permitir su selección y comprobar si se han adivinado.
+     * Controla el estado de selección y desbloquea la selección después de un tiempo determinado.
+     * */
     public void cardsToGuess() {
         final boolean[] seleccionBloqueada = {false}; // Variable para controlar el estado de selección
         if(labelsList.size()==0){
@@ -324,6 +345,10 @@ public class Ventana extends JFrame {
             });
         }
     }
+    /**
+     * Inicia un temporizador que cuenta los segundos transcurridos.
+     * El temporizador se ejecuta cada segundo y actualiza el contador de segundos transcurridos.
+     * */
     private void iniciarTemporizador() {
         segundosTranscurridos = 0;
         temporizador = new Timer();
@@ -335,6 +360,11 @@ public class Ventana extends JFrame {
         }, 1000, 1000);
     }
 
+    /**
+     * Actualiza el temporizador y devuelve el tiempo transcurrido en un formato "MM:SS".
+     * Calcula los minutos y segundos a partir de los segundos transcurridos y los formatea en un String.
+     * El tiempo transcurrido se muestra en un componente de tu elección, y se devuelve el tiempo formateado.
+     * */
     private String actualizarTemporizador() {
         int minutos = segundosTranscurridos / 60;
         int segundos = segundosTranscurridos % 60;
@@ -344,6 +374,12 @@ public class Ventana extends JFrame {
         return tiempoFormateado;
     }
 
+    /**
+     * Reinicia el juego, restaurando el estado inicial.
+     * Elimina todas las tarjetas del tablero y oculta y deshabilita todos los componentes de las etiquetas.
+     * Habilita el primer panel de pestañas y establece su índice seleccionado en 0.
+     * Deshabilita el tercer panel de pestañas.
+     */
     public void restartGame(){
         System.out.println(tableroActual.size());
         for (int i = tableroActual.size() - 1; i >= 0; i--) {
